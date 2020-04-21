@@ -1,10 +1,10 @@
-FROM python:3-alpine
-COPY . /app
-RUN apk add --update krb5-dev swig build-base curl git linux-headers \
-    && curl -sS https://bootstrap.pypa.io/get-pip.py | python3 \
+FROM iron/python:2-dev
+
+RUN apk add --update krb5-dev swig \
     && pip install ply gssapi \
-    && git clone --depth 1 https://github.com/ffilz/pynfs.git /app/pynfs \
-    && cd /app/pynfs && rm -rf ./.git \
+    && git clone git://github.com/ffilz/pynfs.git --shallow-since=2018-03-20T00:00:00 /app/pynfs \
+    && cd /app/pynfs \
+    && git reset --hard 145f4abec678b26a0b4ede417ab7cc788a3f4405 \
     && ./setup.py build
 
 EXPOSE 2049
