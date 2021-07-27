@@ -6,6 +6,7 @@ RUN apk add --no-cache krb5-dev swig \
     && cd /app/pynfs \
     && git reset --hard 145f4abec678b26a0b4ede417ab7cc788a3f4405 \
     && ./setup.py build \
+    && cd nfs4.0 && python -c 'import sys; sys.path.insert(1, "/app/pynfs/nfs4.0/lib"); import nfs4server' \
     && rm -rf .git \
     && pip uninstall -y ply setuptools wheel \
     && pip uninstall -y pip
