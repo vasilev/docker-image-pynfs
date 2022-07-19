@@ -9,14 +9,14 @@ RUN apk add --no-cache krb5-dev swig \
     && cd nfs4.0 && python -c 'import sys; sys.path.insert(1, "/app/pynfs/nfs4.0/lib"); import nfs4server' \
     && rm -rf .git \
     && pip uninstall -y ply setuptools wheel \
-    && pip uninstall -y pip
+    && pip uninstall -y pip \
+    && export SPPATH=`python -c 'import site; print(site.getsitepackages()[0])'`
 
 
 FROM iron/python:2
 RUN apk add --no-cache krb5
 COPY --from=builder /app /app
-COPY --from=builder /usr/lib/python2.7/site-packages /usr/lib/python2.7/site-packages
-
+COPY --from=builder ${SPPATH} ${SPPATH}
 
 EXPOSE 2049
 
